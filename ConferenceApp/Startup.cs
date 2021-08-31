@@ -46,7 +46,7 @@ namespace ConferenceApp
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Conference}/{action=Register}/{id?}");
             });
         }
     }
