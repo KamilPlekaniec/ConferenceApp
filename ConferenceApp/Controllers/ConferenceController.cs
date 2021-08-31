@@ -14,6 +14,12 @@ namespace ConferenceApp.Controllers
         {
             return View(_conferenceUsers);
         }
+        
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View();
+        }
 
         [HttpPost]
         public IActionResult Register(ConferenceUser conferenceUser)
