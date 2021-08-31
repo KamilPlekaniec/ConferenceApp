@@ -11,7 +11,7 @@ namespace ConferenceApp.Models
         Lecture,
         Discussion,
     }
-    public class ConfetenceUser
+    public class ConferenceUser
     {
         public int UserID { get; set; }
         public string FirstName { get; set; }
