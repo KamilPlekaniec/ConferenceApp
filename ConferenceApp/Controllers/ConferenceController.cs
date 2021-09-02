@@ -1,5 +1,7 @@
-﻿using ConferenceApp.Models;
+﻿using ConferenceApp.Context;
+using ConferenceApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,24 +11,40 @@ namespace ConferenceApp.Controllers
 {
     public class ConferenceController : Controller
     {
-        private static List<ConferenceUser> _conferenceUsers = new List<ConferenceUser>();
-        public IActionResult Index()
+        private readonly UserContext _context;
+        //private static List<ConferenceUser> _conferenceUsers = new List<ConferenceUser>();
+        public ConferenceController(UserContext context)
         {
-            return View(_conferenceUsers);
+            _context = context;
         }
+
+        public async Task<IActionResult> Index()
+        {
+            return View(await _context.Users.ToListAsync());
+        }
+
+
         
         [HttpGet]
-        public IActionResult Register()
+        public IActionResult Register(int id = 0)
         {
-            return View();
+            if (id == 0)
+                return View(new ConferenceUser());
+            else
+                return View(_context.Users.Find(id));
         }
 
         [HttpPost]
-        public IActionResult Register(ConferenceUser conferenceUser)
+        public async Task<IActionResult> Register([Bind("UserID,FirstName,LastName,Email,ConferenceType,Photo")] ConferenceUser conferenceUser)
         {
             if (ModelState.IsValid)
             {
-                _conferenceUsers.Add(conferenceUser);
+                if (conferenceUser.UserID == 0)
+                    _context.Add(conferenceUser);
+                else
+                    _context.Update(conferenceUser);
+                await _context.SaveChangesAsync();
+                //_conferenceUsers.Add(conferenceUser);
                 return RedirectToAction(nameof(Register));
             }
             return View(conferenceUser);
