@@ -9,9 +9,9 @@
 <hr />
 
 <p>
-    <a asp-action="Register">Rejestracja</a>
+    <a asp-action="Register" class="btn btn-outline-dark"><i class="far fa-plus-square" style="color:black"></i> Rejestracja</a>
 </p>
-<table class="table">
+<table class="table table-hover">
     <thead>
         <tr>
             <th>
@@ -48,12 +48,13 @@
                 @Html.DisplayFor(modelItem => item.ConferenceType)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Photo)
+                <div class="thumbnail">
+                    <img src="@Url.Content("/images/"+item.Photo)" alt="brak zdjęcia" class="img-thumbnail w-50" />
+                </div>
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                <a asp-action="Register" asp-route-id="@item.UserID"><i class="fa fa-edit fa-lg" style="color:black"></i></a>
+                <a asp-action="Delete" asp-route-id="@item.UserID" class="text-danger ml-1" onclick="return confirm('Czy na pewno chcesz usunąć tego użytkownika?')"><i class="fa fa-trash fa-lg" style="color:black;"></i></a>
             </td>
         </tr>
 }
