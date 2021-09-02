@@ -1,5 +1,8 @@
 using AspNetCore.ReCaptcha;
 using ConferenceApp.Context;
+using ConferenceApp.Models;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +28,8 @@ namespace ConferenceApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc().AddFluentValidation();
+            services.AddTransient<IValidator<ConferenceUser>, ConferenceUserValidator>();
             services.AddControllersWithViews();
             services.AddReCaptcha(Configuration.GetSection("ReCaptcha"));
             services.AddDbContext<UserContext>(options =>
