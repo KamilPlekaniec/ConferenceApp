@@ -1,9 +1,12 @@
 ﻿using ConferenceApp.Context;
 using ConferenceApp.Models;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,9 +14,10 @@ namespace ConferenceApp.Controllers
 {
     public class ConferenceController : Controller
     {
+        private IWebHostEnvironment _environment;
         private readonly UserContext _context;
         //private static List<ConferenceUser> _conferenceUsers = new List<ConferenceUser>();
-        public ConferenceController(UserContext context)
+        public ConferenceController(IWebHostEnvironment environment, UserContext context)
         {
             _context = context;
         }
@@ -70,6 +74,24 @@ namespace ConferenceApp.Controllers
             _context.Users.Remove(users);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task UploadFile(IFormFile file)
+        {
+            if (file == null)
+            {
+                HttpContext.Session.SetString("ImageName", "");
+                return;
+            }
+
+            var uniqueName = $"{Guid.NewGuid()}_{file.FileName}";
+            HttpContext.Session.SetString("ImageName", uniqueName);
+
+            var toFolder = Path.Combine(_environment.WebRootPath, "images");
+            var filePath = Path.Combine(toFolder, uniqueName);
+
+            using var fileStream = new FileStream(filePath, FileMode.Create);
+            await file.CopyToAsync(fileStream);
         }
     }
 }
