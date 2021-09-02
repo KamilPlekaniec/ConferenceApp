@@ -23,7 +23,21 @@ namespace ConferenceApp.Controllers
             return View(await _context.Users.ToListAsync());
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
+            var users = await _context.Users.FirstOrDefaultAsync(m => m.UserID == id);
+            if (users == null)
+            {
+                return NotFound();
+            }
+            return View(users);
+        }
         
         [HttpGet]
         public IActionResult Register(int id = 0)
@@ -48,6 +62,14 @@ namespace ConferenceApp.Controllers
                 return RedirectToAction(nameof(Register));
             }
             return View(conferenceUser);
+        }
+        [HttpGet]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            var users = await _context.Users.FindAsync(id);
+            _context.Users.Remove(users);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
     }
 }
