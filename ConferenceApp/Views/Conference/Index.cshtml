@@ -2,19 +2,18 @@
 
 @{
     ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Lista użytkowników konferencji</h1>
+<hr />
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Register">Rejestracja</a>
 </p>
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.UserID)
-            </th>
             <th>
                 @Html.DisplayNameFor(model => model.FirstName)
             </th>
@@ -36,9 +35,6 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserID)
-            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.FirstName)
             </td>
