@@ -38,21 +38,49 @@
                 <span asp-validation-for="ConferenceType" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Photo" class="control-label"></label>
-                <input asp-for="Photo" class="form-control" />
-                <span asp-validation-for="Photo" class="text-danger"></span>
+                <input hidden id="file" name="file" formenctype="multipart/form-data" />
+                <div class="dropzone dropzone-file-area" id="fileUpload">
+                    <div class="dz-default dz-message">
+                        <span>Przeciągnij albo dodaj swoje zdjęcie</span>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <button type="submit" value="Create" id="submit-all" class="btn btn-dark btn-block">Zarejestruj</button>
+                </div>
+                <div class="form-group col-md-6">
+                    <a asp-action="Index" class="btn btn-secondary btn-block"><i class="fa fa-list-ul"></i> Użytkownicy</a>
+                </div>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        Dropzone.options.fileUpload = {
+            url: 'conference/uploadfile',
+            paramName: "file",
+            autoProcessQueue: true,
+            maxFilesize: 30,
+            resizedWidth: 512,
+            addRemoveLinks: true,
+            maxFiles: 1,
+            acceptedFiles: "image/jpeg,image/png,image/gif",
+            init: function () {
+                var submitButton = document.querySelector("#submit-all");
+                var wrapperThis = this;
+
+                submitButton.addEventListener("click", function () {
+                    wrapperThis.processQueue();
+                });
+
+                this.on('sendimgmultiple', function (data, xhr, formData) {
+                    formData.append("sth", $("#submit-all").val());
+                });
+            }
+        };
+    </script>
 }

@@ -19,6 +19,7 @@ namespace ConferenceApp.Controllers
         //private static List<ConferenceUser> _conferenceUsers = new List<ConferenceUser>();
         public ConferenceController(IWebHostEnvironment environment, UserContext context)
         {
+            _environment = environment;
             _context = context;
         }
 
