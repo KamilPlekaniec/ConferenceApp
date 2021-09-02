@@ -16,7 +16,6 @@ namespace ConferenceApp.Controllers
     {
         private IWebHostEnvironment _environment;
         private readonly UserContext _context;
-        //private static List<ConferenceUser> _conferenceUsers = new List<ConferenceUser>();
         public ConferenceController(IWebHostEnvironment environment, UserContext context)
         {
             _environment = environment;
@@ -58,12 +57,17 @@ namespace ConferenceApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                var imageName = HttpContext.Session.GetString("ImageName");
+                if (!string.IsNullOrEmpty(imageName))
+                {
+                    conferenceUser.Photo = imageName;
+                    HttpContext.Session.SetString("ImageName", "");
+                }
                 if (conferenceUser.UserID == 0)
                     _context.Add(conferenceUser);
                 else
                     _context.Update(conferenceUser);
                 await _context.SaveChangesAsync();
-                //_conferenceUsers.Add(conferenceUser);
                 return RedirectToAction(nameof(Register));
             }
             return View(conferenceUser);
