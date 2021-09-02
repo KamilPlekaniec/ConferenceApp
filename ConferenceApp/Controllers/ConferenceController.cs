@@ -1,4 +1,5 @@
-﻿using ConferenceApp.Context;
+﻿using AspNetCore.ReCaptcha;
+using ConferenceApp.Context;
 using ConferenceApp.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -53,6 +54,7 @@ namespace ConferenceApp.Controllers
         }
 
         [HttpPost]
+        [ValidateReCaptcha]
         public async Task<IActionResult> Register([Bind("UserID,FirstName,LastName,Email,ConferenceType,Photo")] ConferenceUser conferenceUser)
         {
             if (ModelState.IsValid)

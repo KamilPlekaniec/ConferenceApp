@@ -1,3 +1,4 @@
+using AspNetCore.ReCaptcha;
 using ConferenceApp.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,6 +26,7 @@ namespace ConferenceApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddReCaptcha(Configuration.GetSection("ReCaptcha"));
             services.AddDbContext<UserContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("ConferenceUsersDB")));
             services.AddDistributedMemoryCache();

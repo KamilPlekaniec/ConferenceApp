@@ -1,4 +1,5 @@
 ﻿@model ConferenceApp.Models.ConferenceUser
+@using AspNetCore.ReCaptcha
 
 @{
     ViewData["Title"] = "Register";
@@ -45,6 +46,9 @@
                     </div>
                 </div>
             </div>
+            <div class="form-group">
+                @Html.ReCaptcha()
+            </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <button type="submit" value="Create" id="submit-all" class="btn btn-dark btn-block">Zarejestruj</button>
@@ -56,7 +60,7 @@
         </form>
     </div>
 </div>
- add
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
